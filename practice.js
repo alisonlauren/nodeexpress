@@ -1,6 +1,6 @@
 //Step One, apply the core module you intend to use
 const http = require('http');
-//Step Two, apple the express module if intended to use it
+//Step Two, apply the express module if intended to use it
 const express = require('express');
 //Step Three, if you're pulling an array from a different file, refrence the local module
 const data = require('.data');
