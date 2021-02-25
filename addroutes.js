@@ -7,7 +7,7 @@ const app = express();
 //requiring that it pulls from data, eventually
 // const data = require('./data'); 
 const hostname = '127.0.0.1'; //localhost name, our computer
-const port = 3000; //port to run server on
+const port = 3005; //port to run server on
 //use app to handle service requests
 
 const server = http.createServer(app); //using app to handle service requests
@@ -20,12 +20,12 @@ app.get('/', (req, res) => {
 //cats page, and the h1 will read MEOW
 app.get('/cats', (req, res) => {
     // sends back html h1 tag
-    res.send('<h1>"MEOW"</h1>')
+    res.send('<h1>MEOW</h1>')
     })
 //dogs page that will print a string of WOOF when you get to the page
 app.get('/dogs', (req, res) => {
     // sends back html h1 tag
-    res.send('<h1>"WOOF!!"</h1>')
+    res.send('<h1>WOOF!!</h1>')
     })
 //page for cats and dogs that will print a string on the heading
 app.get('/cats_and_dogs', (req, res) => {

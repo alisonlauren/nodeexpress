@@ -1,34 +1,64 @@
-//core http module
-const http = require('http'); 
-//3rd party module
-const express = require('express'); 
-//name to the express module
-const app = express();
-//requiring that it pulls from data, eventually
-// const data = require('./data'); 
-const hostname = '127.0.0.2'; //localhost name, our computer
-const port = 3000; //port to run server on
-//use app to handle service requests
-const data = require('./olddata'); // local data module which will be used in a second
+const http = require('http')
+const express = require('express')
+const data = require('./olddata')
 
-const server = http.createServer(app); //using app to handle service requests
-//regular homepage, where they will see a heading of hello world
+console.log(data)
+
+const hostname = '127.0.0.1'
+const port = 3010
+
+const app = express()
+
+const server = http.createServer(app)
+
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-//this will make it so that no matter how many names/handles/etc you're trying to handle,
-//possible thousands+ depending on the site, do this same function to all of them on their page
-//app will get, from the greet page, the handle of the user, expecting a 
-//request and intending a response
-app.get('/friends/:handle', (req, res) => {
-    //naming handle variable to match the request parameters used by user
-    const { handle } = req.params;
-    //and enabling the response, hello handle name..
-    res.send(`Hello, ${handle}!`);
-});
+    res.send('<h1>Hello World</h1>')
+})
 
-// start listening on the given port and hostname
+app.get('/about', (req, res) => {
+    res.send('<h1>About Page</h1>')
+})
+
+app.get('/friends', (req, res) => {
+    let friends = '';
+    for (let index = 0; index < data.length; index++) {
+        const friend = data[index];
+        friends += `<li><a href="/friends/${friend.handle}">${friend.name}</a></li>`
+
+    }
+    res.send(`
+    <ul>
+    ${friends}
+    </ul>
+    `)
+})
+
+app.get('/friends/:handle', (req, res) => {
+    const { handle } = req.params;
+    const friend = data.find(element => {
+        if (element.handle === handle) {
+            return true;
+        }
+        return false;
+    })
+    if (!friend) {
+        res.status(404)
+        res.send(`<h1>No friend found with handle: ${handle}</h1>`)
+    } else {
+        res.send(
+            `<h1>${friend.name}</h1>
+        <h3>${friend.handle}</h3>
+        <p>${friend.skill}</p>
+        `
+        )
+
+    }
+})
+
+app.get('*', (req, res) => {
+    res.status(404).send('404 - page not found')
+})
+
 server.listen(port, hostname, () => {
-    // once server is listening, log to the console to say so
-    console.log(`Server running at http://${hostname}:${port}/`);
-    });
+    console.log(`Server running at http://${hostname}:${port}/`)
+})
